@@ -10,4 +10,5 @@ public class SonarQubeApplication {
 		SpringApplication.run(SonarQubeApplication.class, args);
 	}
 
+	System.out.println("For testing purpose");
 }
