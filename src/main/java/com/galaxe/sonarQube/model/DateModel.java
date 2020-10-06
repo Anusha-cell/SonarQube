@@ -2,13 +2,7 @@ package com.galaxe.sonarQube.model;
 
 import java.util.Date;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
-@Data
 public class DateModel {
 	
 	private Date startDate;
