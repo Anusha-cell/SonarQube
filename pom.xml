@@ -23,20 +23,25 @@
 	</properties>
 
 	<dependencies>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		
-		
+		<dependency>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>3.4.0.905</version>
+    <type>pom</type>
+    </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -48,15 +53,38 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
 	</dependencies>
-
+	<profiles>
+	<profile>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<sonar.host.url>http://localhost:9000</sonar.host.url>
+			<!-- 	<sonar.login>a4c3a0e55957840573ec4f12a09dcbfb5b7ada0b</sonar.login>
+				<sonar.projectName>Login</sonar.projectName>
+				<sonar.projectVersion>master</sonar.projectVersion>
+				<sonar.test.exclusions>**/test/**/*.*</sonar.test.exclusions> 
+				<sonar.exclusions>**/ai/**/*.*,**/jdbc/**/*.*,**/mpt/**/*.*,**/jcr/**/*.*,**/JDBC*</sonar.exclusions> -->
+			</properties>
+		</profile>
+</profiles>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			 <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.3.0.603</version>
+      </plugin>
 		</plugins>
 	</build>
 
