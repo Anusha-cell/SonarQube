@@ -5,6 +5,7 @@ import java.util.List;
 import com.galaxe.sonarQube.entity.SonarqubeEntity;
 import com.galaxe.sonarQube.model.Measures;
 import com.galaxe.sonarQube.model.MetricComponentModel;
+import com.galaxe.sonarQube.model.Period;
 
 
 
@@ -70,8 +71,16 @@ public class SonarUtility {
 					sonarEntity.setStatus(metrics.getValue());
 				
 			}
+				
+			
 			
 		}
+			Period period = metricsModel.getPeriod();
+			sonarEntity.setDate(period.getDate());
+			sonarEntity.setMode(period.getMode());
+			sonarEntity.setIndex(period.getIndex());
+
+			
 	}}
 
 

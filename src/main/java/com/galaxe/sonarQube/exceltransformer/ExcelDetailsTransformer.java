@@ -18,6 +18,7 @@ public class ExcelDetailsTransformer {
 	 * this method takes Field array and list of Object array for the class for
 	 * which it will generate excel sheet
 	 */
+	@SuppressWarnings("resource")
 	public static ByteArrayInputStream generateExcel(Field[] headers, ArrayList<Object[]> projectData)
 			throws IOException {
 

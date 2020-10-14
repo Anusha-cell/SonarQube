@@ -4,13 +4,10 @@ package com.galaxe.sonarQube.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,20 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.galaxe.sonarQube.model.Component;
-import com.galaxe.sonarQube.model.DateModel;
-import com.galaxe.sonarQube.model.Metric;
+import com.galaxe.sonarQube.model.DateRange;
 import com.galaxe.sonarQube.model.ProjectMetricsRequest;
 import com.galaxe.sonarQube.service.SonarQubeInterface;
 
 
 @RestController
-@RequestMapping(path = "/sonarQube")
+@RequestMapping(path = "/Sonarqube")
 public class SonarQubeController {
 	
 	@Autowired
@@ -41,14 +34,20 @@ public class SonarQubeController {
 		//retrieves project metrics based on project key
 
 		@PostMapping("/Metrics")
-		public String getAllMetrics(@RequestBody ProjectMetricsRequest projectMetricsRequest){
+		public String getAllMetrics(@RequestBody ProjectMetricsRequest projectMetricsRequest) throws JsonParseException, JsonMappingException, IOException, NotFoundException{
 			
         return sonarQubeService.getAllMetricsofProject(projectMetricsRequest);
 		}
+		
+		//Retrieves all the projects
+
 		@GetMapping(value="/SearchAllProject")
 	     public String searchAllProject(){
 	        return sonarQubeService.getsearchAllproject();
 	    }
+		
+		//Returns project history
+
 	    @PostMapping("/getSearchHistory") 
 	    public String getProjectHistory(@RequestBody ProjectMetricsRequest request)throws JsonParseException, JsonMappingException, IOException{
 	    
@@ -63,21 +62,17 @@ public class SonarQubeController {
 	        return sonarQubeService.getsearchproject();
 	    }
 	
+	  //Returns all the metrics based on the duration
+  
 	  @PostMapping("/getMetricsBasedOnId") 
 	  public String getMetricsById(@RequestBody ProjectMetricsRequest projectMetricsRequest) throws JsonParseException, JsonMappingException, IOException { 
 		  
 		return sonarQubeService.getMetricsById(projectMetricsRequest);
-
-	  
-	  
 	  }
 	  
-	  @GetMapping(value="/getMetrics")
-	    public List<String> getMetrics(){
-	        return sonarQubeService.getMetrics();
-	    }
-	  
 	 
+	  //Generates an excel sheet
+
 	  @RequestMapping(value = "/galaxe-dev/projects/projectReportByGroupName", consumes = "application/json", method = RequestMethod.POST)
 	    public void getGroupRepoDetails(@RequestBody ProjectMetricsRequest projectMetricsRequest , HttpServletResponse response) throws IOException {
 		    response.setContentType("application/octet-stream");
@@ -98,20 +93,23 @@ public class SonarQubeController {
 	        return sonarQubeService.getProjetcstatus(projectKey);
 	    }
 	    
-		//retrieves group deatils
+		//Retrieves the record from the DB by sonarId
 
-	    @GetMapping(value="/userGroup")
-	    public String getUsergroup(){
-	        return sonarQubeService.getUsergroup();
+	    @PostMapping("/getById")
+	    public ResponseEntity<Object> getMetricsById(@RequestBody com.galaxe.sonarQube.entity.SonarqubeEntity entity)
+	    {
+			return ResponseEntity.ok().body(sonarQubeService.getMetricById(entity));
+	    	
 	    }
 	    
-		//retrieves user details for the user
+	    //Retrieves the record from DB based on the duration
 
-	    @GetMapping(value="/user/{userGroup}")
-	    public String getUser(@PathVariable String userGroup){
-	        return sonarQubeService.getUserinUsergroup(userGroup);
+	    @PostMapping("/getDataBasedOnDuration")
+	    public ResponseEntity<Object> getMetricsByDuration(@RequestBody DateRange dateRange)
+	    {
+			return ResponseEntity.ok().body(sonarQubeService.getMetricByDuration(dateRange));
+	    	
 	    }
-	    
 	    
 }
 	 
