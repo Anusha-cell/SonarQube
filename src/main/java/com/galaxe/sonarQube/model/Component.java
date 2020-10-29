@@ -1,10 +1,13 @@
 package com.galaxe.sonarQube.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 import lombok.Data;
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown=true)
 @Data
 public class Component {
 	
@@ -12,6 +15,10 @@ public class Component {
 	private String organization;
 	
 	private String key;
+	
+	private String id;
+	 
+	private String description;
 	
 	private String name;
 	
@@ -23,6 +30,8 @@ public class Component {
 	
 	private String revision;
  
+	private List<Measure> measures;
+
 	
 	
 }

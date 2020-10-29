@@ -56,7 +56,13 @@
  		<dependency>    
     <groupId>org.hibernate</groupId>    
     <artifactId>hibernate-core</artifactId>    
-    </dependency>  
+    </dependency> 
+    
+    <dependency>
+   <groupId>commons-configuration</groupId>
+   <artifactId>commons-configuration</artifactId>
+  <version>1.8</version>
+</dependency> 
 		
 		
 		<dependency>

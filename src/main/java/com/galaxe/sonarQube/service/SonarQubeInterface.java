@@ -2,41 +2,53 @@ package com.galaxe.sonarQube.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.galaxe.sonarQube.entity.SonarqubeEntity;
+import org.springframework.stereotype.Service;
+
+
 import com.galaxe.sonarQube.model.DateRange;
 import com.galaxe.sonarQube.model.ProjectMetricsRequest;
 
+@Service
 public interface SonarQubeInterface {
 	
     //Retrieves all the metrics from the end point URL and storing it in DB
-	public String  getAllMetricsofProject(ProjectMetricsRequest projectMetricsRequest) throws JsonParseException, JsonMappingException, IOException, NotFoundException;
+	public String  getAllMetricsofProject(ProjectMetricsRequest projectMetricsRequest) throws IOException;
 	
-	//Retrieves all the project
-	public String getsearchproject() ;
 	
 	//Return project status based on the project key
 	public String getProjetcstatus(String projectKey);
 	
 	//Returns all the metrics based on the duration
-	public String getMetricsById(ProjectMetricsRequest projectMetricsRequest) throws JsonParseException, JsonMappingException, IOException;
+	public String getMetricsById(ProjectMetricsRequest projectMetricsRequest) throws IOException;
 	
     //Generates an excel sheet
-	public ByteArrayInputStream getGroupRepoDetails(ProjectMetricsRequest projectMetricsRequest) throws JsonParseException, JsonMappingException, IOException;
+	public ByteArrayInputStream getGroupRepoDetails(ProjectMetricsRequest projectMetricsRequest) throws IOException;
 	
 	//Retrieves all the projects
-	public String getsearchAllproject();
+	public String getsearchAllproject() throws  IOException;
 	
 	//Returns project history
-	public String getProjectHistory(ProjectMetricsRequest request)throws JsonParseException, JsonMappingException, IOException;
+	public String getProjectHistory(ProjectMetricsRequest request)throws  IOException;
 	
 	//Retrieves the record from the DB by sonarId
-	public Object getMetricById(SonarqubeEntity entity);
+	public Object getMetricById(int id);
 	
     //Retrieves the record from DB based on the duration
-	public Object getMetricByDuration(DateRange dateRange);;
+	public Object getMetricByDuration(DateRange dateRange);
+	
+	//Retrieves all the issues and storing it in DB
+	public String getAllIssues(ProjectMetricsRequest projectMetricsRequest) throws IOException;
+
+	
+	//Retrieves all the issues and storing in excel sheet
+	public ByteArrayInputStream getExcelSheetForIssues(ProjectMetricsRequest projectMetricsRequest) throws IOException;
+
+
+	//Retrieves all the project(by default it retrieves only 100 projects here)	
+
+	public String getsearchproject();
 
 }
 

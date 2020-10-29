@@ -21,5 +21,5 @@ public class MetricComponent {
 	private String reliability;
 	private String maintainability;
 	private String organizationName;
-	private List<Measures> measures;
+	private List<Measure> measures;
 }

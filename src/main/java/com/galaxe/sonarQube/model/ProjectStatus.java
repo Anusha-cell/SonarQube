@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ProjectStatus {
 	
-	private ProjectStatusModel projectStatus;
+	private ProjectStatusModel statusModel;
 
 	
 

@@ -3,7 +3,6 @@ package com.galaxe.sonarQube.model;
 import java.util.List;
 
 import lombok.Data;
-
 @Data
 public class ProjectStatusModel {
 	
@@ -11,7 +10,7 @@ public class ProjectStatusModel {
 	
 	private List<Condition> conditions;
 	
-	private List<Period> periods;
+	//private List<Period> periods;
 	
 	private boolean ignoredConditions;
 

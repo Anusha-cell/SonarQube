@@ -1,5 +1,6 @@
 package com.galaxe.sonarQube.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus
@@ -18,6 +19,9 @@ public class DataIntegrityViolationException extends RuntimeException {
         super(msg, cause);
 
     }
+
+	public DataIntegrityViolationException(HttpStatus notFound) {
+	}
 
 
 }

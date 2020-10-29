@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class ProjectMetric {
 	
-	public Component component;
-	public List<Metric> metrics;
-	public List<Period> periods;
+	private Component component;
+	private List<Metric> metrics;
+	private List<Period> periods;
 	
 	
 	

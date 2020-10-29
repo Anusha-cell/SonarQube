@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -18,15 +19,18 @@ public class ExcelDetailsTransformer {
 	 * this method takes Field array and list of Object array for the class for
 	 * which it will generate excel sheet
 	 */
+	private ExcelDetailsTransformer()
+	{}
+	
 	@SuppressWarnings("resource")
-	public static ByteArrayInputStream generateExcel(Field[] headers, ArrayList<Object[]> projectData)
+	public static ByteArrayInputStream generateExcel(Field[] headers, List<Object[]> projectData)
 			throws IOException {
 
 		Cell cell = null;
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		XSSFSheet sheet = workbook.createSheet("project");
-		ArrayList<Object[]> data = new ArrayList<Object[]>();
+		ArrayList<Object[]> data = new ArrayList<>();
 		printArray(headers, 0, data);
 
 		// Creating headers

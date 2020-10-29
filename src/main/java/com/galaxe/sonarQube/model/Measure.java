@@ -5,16 +5,20 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import lombok.Data;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 @Data
-@JsonIgnoreProperties
 public class Measure {
 	
-	public Metric metric;
-	public String value;
-	public List<Period> period;
-	public boolean bestValue;
+
+	private String metric;
+	private String value;
+	private List<Period> period;
+	private boolean bestValue;
+    private List<History> history;
+
 	
 	
 	
