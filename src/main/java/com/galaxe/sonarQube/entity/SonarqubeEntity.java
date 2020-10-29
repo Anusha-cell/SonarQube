@@ -1,6 +1,5 @@
 package com.galaxe.sonarQube.entity;
 
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="sonar_data")
+@Table(name="sonar_data_table")
 public class SonarqubeEntity {
 	
 	@Column(name = "id")
@@ -35,7 +34,7 @@ public class SonarqubeEntity {
 
 	@Column(name = "lastAnalysisDate")
 
-	private Timestamp date;
+	private String date;
 	
 	@Column(name = "mode")
 	private String mode;

@@ -150,7 +150,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
 	    	do {
 	    		
 		
-			String url=projecthistoryUrl+Constant.metric+projectMetricsRequest.getMetrics()+Constant.components+projectKeyList.get(i)+"&p="+j;
+			String url=projecthistoryUrl+Constant.METRICS+projectMetricsRequest.getMetrics()+Constant.COMPONENTS+projectKeyList.get(i)+Constant.PAGE+j;
 	        ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
 	        builder.append(res.getBody());
 			result=builder.toString();
@@ -180,7 +180,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
 	public ByteArrayInputStream getGroupRepoDetails(ProjectMetricsRequest projectMetricsRequest) throws IOException {
 		
 		List<SonarqubeEntity> sonarEntityList=null;
-
+        List<String> list=new ArrayList<>();
 		List<String> projectKeyList=getKeys(projectMetricsRequest.getProjectKey());
 		
 		String result="";
@@ -192,30 +192,31 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
 			
 
 
-		String url=projecthistoryUrl+Constant.metric+projectMetricsRequest.getMetrics()+Constant.components+projectKeyList.get(i)+"&from="+projectMetricsRequest.getStartDate()+"&to="+projectMetricsRequest.getEndDate();
-	    ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
-	    builder.append(res.getBody());
-		result=builder.toString();
-		
+	//String url=metricUrl+Constant.metric+projectMetricsRequest.getMetrics()+Constant.components+projectKeyList.get(i)+"&from="+projectMetricsRequest.getStartDate()+"&to="+projectMetricsRequest.getEndDate();
+			String url=metricUrl+"metricKeys="+projectMetricsRequest.getMetrics()+Constant.COMPONENTS+projectKeyList.get(i)+"&additionalFields=period";
+			ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
+			builder.append(res.getBody());
+    		result=builder.toString();
+    		list.add(result);
         
 		}
 		
-		
+		List<SonarqubeEntity> sonarEntityList1 = new ArrayList<SonarqubeEntity>();
+
 		ObjectMapper mapper=new ObjectMapper(); 
 		com.galaxe.sonarQube.model.Root metricsModel=new com.galaxe.sonarQube.model.Root();
 		metricsModel=mapper.readValue(result, com.galaxe.sonarQube.model.Root.class);
+		SonarqubeEntity sonarEntity=new SonarqubeEntity();
+		com.galaxe.sonarQube.serviceImpl.util.SonarUtility.metricsMapper(metricsModel,sonarEntity);
+		repository.save(sonarEntity);
+		java.lang.reflect.Field[] fields = SonarqubeEntity.class.getDeclaredFields();
+		ArrayList<Object[]> gitData=new ArrayList<Object[]>();
 		 
-		  SonarqubeEntity sonarEntity=new SonarqubeEntity();
-		  com.galaxe.sonarQube.serviceImpl.util.SonarUtility.metricsMapper(metricsModel,sonarEntity);
-		  java.lang.reflect.Field[] fields = SonarqubeEntity.class.getDeclaredFields();
-		  ArrayList<Object[]> gitData=new ArrayList<Object[]>();
-		 
-		  sonarEntityList = new ArrayList<SonarqubeEntity>();
-		  sonarEntityList.add(sonarEntity);	
-		  for (SonarqubeEntity gitInfo : sonarEntityList) {
+		sonarEntityList1.add(sonarEntity);	
+		for (SonarqubeEntity gitInfo : sonarEntityList1) {
 				 
 			    gitData.add(new
-				Object[]{gitInfo.getSonarId(),gitInfo.getOrganizationName(),gitInfo.getProduct(),gitInfo.getProject(),gitInfo.getSize(),gitInfo.getDate(),gitInfo.getLinesofcode(),gitInfo.getNoofbugs(),gitInfo.getNoofvulnerabilities(),gitInfo.getNoofcodesmells(),gitInfo.getPercentcoverage(),gitInfo.getNoofsecurityhotspots(),gitInfo.getReliability(),gitInfo.getSecurity(),gitInfo.getPercentduplication(),gitInfo.getProjectid(),gitInfo.getProjectkey(),gitInfo.getProjectdescription(),gitInfo.getProjectqualifier(),gitInfo.getViolations()});
+				Object[]{gitInfo.getSonarId(),gitInfo.getOrganizationName(),gitInfo.getProduct(),gitInfo.getProject(),gitInfo.getSize(),gitInfo.getDate(),gitInfo.getMode(),gitInfo.getIndex(),gitInfo.getLinesofcode(),gitInfo.getNoofbugs(),gitInfo.getNoofvulnerabilities(),gitInfo.getNoofcodesmells(),gitInfo.getPercentcoverage(),gitInfo.getNoofsecurityhotspots(),gitInfo.getReliability(),gitInfo.getSecurity(),gitInfo.getPercentduplication(),gitInfo.getProjectkey(),gitInfo.getProjectid(),gitInfo.getProjectdescription(),gitInfo.getProjectqualifier(),gitInfo.getViolations()});
 			  
 		  }
 		  ByteArrayInputStream inputStream= com.galaxe.sonarQube.exceltransformer.ExcelDetailsTransformer.generateExcel(fields,gitData);
@@ -242,7 +243,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
         	do
  			{
  
-        	String url=projecthistoryUrl+Constant.metric+request.getMetrics()+Constant.components+projectKeyList.get(i)+Constant.p+j;
+        	String url=projecthistoryUrl+Constant.METRICS+request.getMetrics()+Constant.COMPONENTS+projectKeyList.get(i)+Constant.PAGE+j;
  		
         	ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
         	builder.append(res.getBody());
@@ -293,7 +294,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
  		
          for( int i=0;i<projectKeyList.size();i++)
 		{
-        	String url=metricUrl+"metricKeys="+projectMetricsRequest.getMetrics()+Constant.components+projectKeyList.get(i)+"&additionalFields=period";
+        	String url=metricUrl+"metricKeys="+projectMetricsRequest.getMetrics()+Constant.COMPONENTS+projectKeyList.get(i)+"&additionalFields=period";
 			ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
 			builder.append(res.getBody());
     		result=builder.toString();
@@ -361,7 +362,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
 		do {	
         
  
-         	String url=issueUrl+Constant.component+projectKeyList.get(i)+Constant.p+j;
+         	String url=issueUrl+Constant.COMPONENT+projectKeyList.get(i)+Constant.PAGE+j;
          	
          			//"&createdAfter="+projectMetricsRequest.getStartDate()+"&createdBefore="+projectMetricsRequest.getEndDate();
 			ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
@@ -414,7 +415,7 @@ public class SonarQubeServiceImpl implements SonarQubeInterface {
 		
 		do
         {
-			String url=issueUrl+Constant.component+projectKeyList.get(i)+Constant.p+j;
+			String url=issueUrl+Constant.COMPONENT+projectKeyList.get(i)+Constant.PAGE+j;
 			ResponseEntity<String> res=template.exchange(url, HttpMethod.GET, new HttpEntity<Object>(createHeaders(Constant.USERNAME, Constant.PASSWORD)), String.class);
 			builder.append(res.getBody());
     		result=builder.toString();

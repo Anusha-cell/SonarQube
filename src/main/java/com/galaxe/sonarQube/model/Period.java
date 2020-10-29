@@ -1,7 +1,6 @@
 package com.galaxe.sonarQube.model;
 
 
-import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +18,7 @@ public class Period {
     private int index;
     
     @JsonProperty("date")
-    private Timestamp date;
+    private String date;
 
 	
 	

@@ -29,7 +29,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
     
     
     @ExceptionHandler(NullPointerException.class)
-    public final ResponseEntity<Object> NullPointerException(NullPointerException ex, WebRequest request) {
+    public final ResponseEntity<Object> nullPointerException(NullPointerException ex, WebRequest request) {
        
         ErrorResponse error = new ErrorResponse("NullPointerException");
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.galaxe.sonarQube.exception.DataIntegrityViolationException;
@@ -76,7 +75,7 @@ public class SonarQubeController {
 	 
 	  //Generates an excel sheet
 
-	  @RequestMapping(value = "/galaxe-dev/projects/projectReportByGroupName", consumes = "application/json", method = RequestMethod.POST)
+	  @PostMapping("/getMetricsExcelsheet")
 	    public void getGroupRepoDetails(@RequestBody ProjectMetricsRequest projectMetricsRequest , HttpServletResponse response) throws IOException {
 		    response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition", "attachment; filename=ProjectReport.xlsx");
@@ -129,7 +128,7 @@ public class SonarQubeController {
 		//Retrieves all the issues and storing it in DB
 	    
 	    @PostMapping("/getAllIssues")
-		public String getAllIssues(@RequestBody ProjectMetricsRequest projectMetricsRequest) throws IOException, NotFoundException{
+		public String getAllIssues(@RequestBody ProjectMetricsRequest projectMetricsRequest) throws IOException{
 			
         return sonarQubeService.getAllIssues(projectMetricsRequest);
 		}
